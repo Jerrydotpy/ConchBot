@@ -14,11 +14,7 @@ from bot.cogs.utils.embed import Embeds
 import logging
 
 def get_prefix(client, message):
-    prefixes = []
-    prefixes.append('cb!')
-    prefixes.append('cB ')
-    prefixes.append('CB ')
-    prefixes.append('Cb ')
+    prefixes = ['cb!', 'cB ', 'CB ', 'Cb ']
     return commands.when_mentioned_or(*prefixes)(client, message)
 
 load_env = load_dotenv()

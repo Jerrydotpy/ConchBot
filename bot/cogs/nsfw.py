@@ -45,15 +45,10 @@ class NSFW(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(description="Use a sauce code to find a hentai comic from nhentai.net.\n[id] value is optional. Returns random NHentai comic when none.")
-    @commands.cooldown(1, 5, commands.BucketType.user) 
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def sauce(self, ctx, id=None):
         await ctx.send("Getting your porn...")
-        if id is None:
-            doujin = Utils.get_random_hentai()
-
-        else:
-            doujin = Hentai(id)
-
+        doujin = Utils.get_random_hentai() if id is None else Hentai(id)
         if not Hentai.exists(doujin.id):
             await ctx.send("Nothing found.")
 
@@ -63,18 +58,16 @@ class NSFW(commands.Cog):
             except:
                 artist = "No artist"
             embeds = []
-            num = 0
-            for url in doujin.image_urls:
-                num += 1
+            for num, url in enumerate(doujin.image_urls, start=1):
                 embed = discord.Embed(title=doujin.title(Format.Pretty), color=ctx.author.color, url=doujin.url)
                 embed.set_image(url=url)
                 embed.set_footer(text=f"Author: {artist} | Upload date: {doujin.upload_date} | Page {num} of {len(doujin.image_urls)}")
                 embeds.append(embed)
-            
+
             paginator = DiscordUtils.Pagination.CustomEmbedPaginator(ctx, remove_reactions=True)
             paginator.add_reaction('⏪', "back")
             paginator.add_reaction('⏩', "next")
-            
+
             await paginator.run(embeds)
 
     @commands.command(description="Get porn from Reddit r/porn.")
