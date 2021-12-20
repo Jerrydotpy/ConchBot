@@ -10,7 +10,9 @@
 
 <h1 align="center">ConchBot</h1>
 
-Welcome to the Offical GitHub repository of [Conchbot](https://github.com/ConchDev/ConchBot/)
+Welcome to the Offical GitHub repository of the next [Conchbot](https://github.com/Jerry-py/ConchBot) by Jerrydotpy
+
+Note: The orginal has been discontinued
 
 The source code of the Discord bot ConchBot. The bot is **entirely** open source.
 
