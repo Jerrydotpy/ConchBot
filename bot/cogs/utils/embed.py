@@ -44,24 +44,22 @@ class Embeds():
 
     @staticmethod
     def _error_codes():
-        error_codes = {
+        return {
             400 : "Bad request",
             401 : "Unauthorized",
             403 : "Forbidden",
             404 : "Page Not found",
             429 : "Too many requests",
         }
-        return error_codes
 
     @staticmethod
     def _cooldown_messages():
-        cooldown_choices = [
+        return [
             "Woah, slow down man",
             "A little too quick there",
             "Too fast man",
             "Spamming is cool"
         ]
-        return cooldown_choices
 
     @staticmethod
     def _time():

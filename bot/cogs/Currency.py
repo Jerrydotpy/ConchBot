@@ -200,13 +200,12 @@ class Currency(commands.Cog):
         cursor = await db.cursor()
         walamt, bankamt = await self.get_amt(ctx.author)
         await self.open_account(ctx.author)
-        successallmsg = "{} moners have been withdrawn your bank."
         notenoughmsg = "You don't have enough moners in your bank to withdraw that much!"
         negmsg = "You cannot withdraw negative numbers!"
-        successmsg = "{} moners have been withdrawn from your bank."
         if amt == "all":
             await cursor.execute(f'UPDATE main SET bank = 0 WHERE user_id = {ctx.author.id}')
             await cursor.execute(f'UPDATE main SET wallet = {walamt[0]+bankamt[0]} WHERE user_id = {ctx.author.id}')
+            successallmsg = "{} moners have been withdrawn your bank."
             await ctx.send(successallmsg.format(bankamt[0]))
         elif int(amt)>bankamt[0]:
             await ctx.send(notenoughmsg)
@@ -215,6 +214,7 @@ class Currency(commands.Cog):
         else:
             await cursor.execute(f'UPDATE main SET wallet = {walamt[0]+int(amt)} WHERE user_id = {ctx.author.id}')
             await cursor.execute(f'UPDATE main SET bank = {bankamt[0]-int(amt)} WHERE user_id = {ctx.author.id}')
+            successmsg = "{} moners have been withdrawn from your bank."
             await ctx.send(successmsg.format(int(amt)))
         await db.commit()
         await cursor.close()
@@ -226,22 +226,21 @@ class Currency(commands.Cog):
         db = await aiosqlite.connect('./bot/db/currency.db')
         cursor = await db.cursor()
         check = shop.get(item)
-        negmsg = "You can't buy a negative quantity of items. Use `cb sell` for that!"
-        notenough = "You don't have enough money to make that purchase."
-        notenough0 = "You need to withdraw some bank money to make this purchase."
-        success = "You just bought {} {} for {}! To use one, please use `cb use {}`."
         await self.open_account(ctx.author)
         if quantity < 1:
+            negmsg = "You can't buy a negative quantity of items. Use `cb sell` for that!"
             await ctx.send(negmsg)
             return
-        
+
         if check is not None:
             price = shop[item].get('price')
             await cursor.execute(f"SELECT amount FROM u{ctx.author.id} WHERE item = '{item}'")
             check1 = await cursor.fetchone()
             walamt, bankamt = await self.get_amt(ctx.author)
+            notenough0 = "You need to withdraw some bank money to make this purchase."
             if walamt[0] + bankamt[0] < price*quantity:
-                    await ctx.send(notenough)
+                notenough = "You don't have enough money to make that purchase."
+                await ctx.send(notenough)
             elif walamt[0] < price*quantity:
                 await ctx.send(notenough0)
             else:
@@ -250,7 +249,8 @@ class Currency(commands.Cog):
                 if check1 is None:
                     await cursor.execute(f"INSERT INTO u{ctx.author.id} (item, amount) VALUES ('{item}', {quantity})")
                 await cursor.execute(f'UPDATE main SET wallet = {walamt[0] - quantity*price} WHERE user_id = {ctx.author.id}')
-                await ctx.send(success.format(quantity, item, price*quantity, item))   
+                success = "You just bought {} {} for {}! To use one, please use `cb use {}`."
+                await ctx.send(success.format(quantity, item, price*quantity, item))
         else:
             await ctx.send("You must specify a valid item or item ID. Use `cb shop` to view all items currently available.")
         await db.commit()
@@ -336,7 +336,6 @@ class Currency(commands.Cog):
     @commands.cooldown(1, 60, BucketType.user)
     async def steal(self, ctx, victim:discord.Member):
         await self.open_account(victim)
-        failmsg = "You failed and had to pay 100 moners. That's what you get."
         if victim == ctx.author:
             await ctx.send("You can't steal from yourself.")
             return
@@ -361,6 +360,7 @@ class Currency(commands.Cog):
             else:
                 await self.update_bank(ctx.author, -100)
                 await self.update_bank(victim, 100)
+                failmsg = "You failed and had to pay 100 moners. That's what you get."
                 await ctx.send(failmsg)
 
     @commands.command(aliases=['gift'], description="Give someone a gift of moners or an item!")
@@ -369,8 +369,8 @@ class Currency(commands.Cog):
         await self.open_account(user)
         db = await aiosqlite.connect('./bot/db/currency.db')
         cursor = await db.cursor()
-        selfmsg = "You can't give items to yourself."
         if user == ctx.author:
+            selfmsg = "You can't give items to yourself."
             await ctx.send(selfmsg)
             return
         if mode == "item":
@@ -458,7 +458,7 @@ class Currency(commands.Cog):
 
         else:
             final = []
-            for i in range(3):
+            for _ in range(3):
                 a = random.choice([":fire:","<:Conch:741462553846087721>", ":heart:",":middle_finger:",":smiling_imp:"])
                 final.append(a)
 
@@ -594,9 +594,7 @@ class Currency(commands.Cog):
         if amount[0] < 1:
             await ctx.send("You can't use a Conch Shell you don't have.")
         else:
-            items = []
-            for item in shop:
-                items.append(item)
+            items = list(shop)
             reward = random.choice(items)
             await ctx.send(f"You asked your Bronze Conch what you could have as a prize and it gave you a {reward}!")
             await self.item_func(ctx.author, reward, 1)
@@ -611,17 +609,14 @@ class Currency(commands.Cog):
         result = await cursor.fetchall()
         embed = discord.Embed(title="Available tasks", colour=ctx.author.colour)
         for entry in tasks:
-            flag = False
-            for a in result:
-                if entry in a:
-                    flag = True
-            if flag == True:
+            flag = any(entry in a for a in result)
+            if flag:
                 embed.add_field(name=f"{entry} ✅", value=f"Description: {tasks[entry].get('desc')}\nReward: {tasks[entry].get('reward')}")
             else:
                 embed.add_field(name=entry, value=f"Description: {tasks[entry].get('desc')}\nReward: {tasks[entry].get('reward')}")
         embed.set_footer(text="To do a task, use 'cb task start {task name}' | ✅ means finished task")
         await ctx.send(embed=embed)
-        
+
         await cursor.close()
         await db.close()
 

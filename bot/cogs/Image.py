@@ -209,7 +209,7 @@ class Image(commands.Cog):
         if (animal := animal.lower()) in animal_options:
             animal_fact_url = f"https://some-random-api.ml/facts/{animal}"
             animal_image_url = f"https://some-random-api.ml/img/{animal}"
-            
+
 
             async with ctx.typing():
 
@@ -229,11 +229,10 @@ class Image(commands.Cog):
                         embed.add_field(name="Fact", value=animal_api["fact"])
                         if image_link is not None:
                             embed.set_image(url=image_link)
-                        await ctx.send(embed=embed)
-
                     else:
                         embed = Embeds().OnApiError(command_name=ctx.command.qualified_name, status=response.status)
-                        await ctx.send(embed=embed)
+                    await ctx.send(embed=embed)
+
         else:
             await ctx.send(f"Sorry but {animal} isn't in my api")
 
@@ -248,7 +247,7 @@ class Image(commands.Cog):
                 embed.set_image(url=res['data']['children'] [random.randint(0, 25)]['data']['url'])
                 await ctx.send(embed=embed)
         except:
-            meme_link = f"https://some-random-api.ml/meme"
+            meme_link = 'https://some-random-api.ml/meme'
 
             async with request("GET", meme_link, headers={}) as response:
                 if response.status == 200:
@@ -258,10 +257,10 @@ class Image(commands.Cog):
 
                     embed = discord.Embed(title="Meme", description=caption)
                     embed.set_image(url=image)
-                    await ctx.send(embed=embed)
                 else:
                     embed = Embeds().OnApiError(command_name=ctx.command.qualified_name, status=response.status)
-                    await ctx.send(embed=embed)
+
+                await ctx.send(embed=embed)
 
     @commands.command(description="This command makes anyone *glassed*.\n[member] value is optional.")
     async def glass(self, ctx, member: discord.Member=None):
@@ -354,13 +353,11 @@ class Image(commands.Cog):
                 async with blurSession.get(f'https://some-random-api.ml/canvas/blur?avatar={member.avatar_url_as(format="png", size=1024)}') as blurImage:
                     if blurImage.status == 200:
                         imageData = io.BytesIO(await blurImage.read())
-                    
+
                         await blurSession.close()
                     else:
                         embed = Embeds().OnApiError(command_name=ctx.command.qualified_name, status=blurImage.status)
                         await ctx.send(embed=embed)
-                        pass
-
         await ctx.reply(file=discord.File(imageData, 'blur.gif'))
 
     @commands.command(description="Pixelate an avatar.\n[member] value is optional.")
@@ -372,13 +369,11 @@ class Image(commands.Cog):
                 async with pixelSession.get(f'https://some-random-api.ml/canvas/pixelate?avatar={member.avatar_url_as(format="png", size=1024)}') as pixelImage:
                     if pixelImage.status == 200:
                         imageData = io.BytesIO(await pixelImage.read())
-                    
+
                         await pixelSession.close()
                     else:
                         embed = Embeds().OnApiError(command_name=ctx.command.qualified_name, status=pixelImage.status)
                         await ctx.send(embed=embed)
-                        pass
-
         await ctx.reply(file=discord.File(imageData, 'pixel.gif'))
 
     @commands.command(description="Returns an image of an anime pat!")
@@ -468,7 +463,7 @@ class Image(commands.Cog):
     @commands.command(description="Get an anime wink!")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def wink(self, ctx):
-        wink_image = f"https://some-random-api.ml/animu/wink"
+        wink_image = 'https://some-random-api.ml/animu/wink'
 
         async with ctx.typing():
             async with request("GET", wink_image, headers={}) as response:
@@ -478,14 +473,12 @@ class Image(commands.Cog):
                 else:
                     embed = Embeds().OnApiError(command_name=ctx.command.qualified_name, status=response.status)
                     await ctx.send(embed=embed)
-                    pass
-
             await ctx.send(image)
     
     @commands.command(description="Get an anime hug.")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def hug(self, ctx):
-        hug_image = f"https://some-random-api.ml/animu/hug"
+        hug_image = 'https://some-random-api.ml/animu/hug'
 
         async with ctx.typing():
             async with request("GET", hug_image, headers={}) as response:
@@ -495,14 +488,12 @@ class Image(commands.Cog):
                 else:
                     embed = Embeds().OnApiError(command_name=ctx.command.qualified_name, status=response.status)
                     await ctx.send(embed=embed)
-                    pass
-
             await ctx.send(image)
 
     @commands.command(description="Get a random picture of Pikachu!")
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def pikachu(self, ctx):
-        pikachu_image = f"https://some-random-api.ml/img/pikachu"
+        pikachu_image = 'https://some-random-api.ml/img/pikachu'
 
         async with ctx.typing():
             async with request("GET", pikachu_image, headers={}) as response:
@@ -512,8 +503,6 @@ class Image(commands.Cog):
                 else:
                     embed = Embeds().OnApiError(command_name=ctx.command.qualified_name, status=response.status)
                     await ctx.send(embed=embed)
-                    pass
-
             await ctx.send(image)
 
 def setup(client):

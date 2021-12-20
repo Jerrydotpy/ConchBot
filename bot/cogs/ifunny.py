@@ -165,7 +165,7 @@ class iFunny(commands.Cog):
     async def post(self, ctx, image=None):
         if image is None:
             if len(ctx.message.attachments) > 1:
-                return await ctx.send(f"iFunny only supports one attachment.")
+                return await ctx.send('iFunny only supports one attachment.')
             else:
                 image = image.attachments[0].url
 
@@ -179,7 +179,7 @@ class iFunny(commands.Cog):
             await ctx.send(embed=embed)
         except:
             await ctx.send(embed=discord.Embed(title="Posted!", description="Set title to go to iFunny page", url="https://ifunny.co/user/DiscordConchbot"))
-        
+
         await msg.delete()
         post.add_comment(text=f"Posted by {ctx.author} on Discord using Discord ConchBot.")
 

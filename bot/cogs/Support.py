@@ -23,9 +23,7 @@ class Support(commands.Cog):
     async def on_dbl_vote(self, data):
         channel = self.client.get_channel(724050498847506436)
         user = self.client.get_user(int(data['user']))
-        if user is None:
-            pass
-        else:
+        if user is not None:
             await user.send("Thanks for voting for ConchBot! Due to this, you'll get awesome perks, such as:"
             "\nUnlocked image commands!\nNo message on the AI!\nA `bronze conch` currency item! (Use with `cb use bronze`)")
         await Currency.item_func(self, user, "Bronze Conch", 1)

@@ -31,9 +31,6 @@ class Utility(commands.Cog):
             await cursor.execute("SELECT MAX(version) FROM updates")
             result = await cursor.fetchone()
             version = result[0]
-        else:
-            pass
-
         await cursor.execute(f"SELECT name FROM updates WHERE version = '{version}'")
         name = await cursor.fetchone()
         await cursor.execute(f"SELECT desc FROM updates WHERE version = '{version}'")
@@ -82,7 +79,7 @@ class Utility(commands.Cog):
         current_time = time.time()
         difference = int(round(current_time - start_time))
         text = str(datetime.timedelta(seconds=difference))
-        e = discord.Embed(title=f"Uptime,", color=discord.Color.green())
+        e = discord.Embed(title='Uptime,', color=discord.Color.green())
         e.add_field(name="Time:", value=f"{days}**d**, {hours}**h**, {minutes}**m**, {seconds}**s**", inline=True)
         e.add_field(name="Time Lapse:", value=text, inline=False)
         await ctx.send(embed=e)
@@ -143,10 +140,6 @@ class Utility(commands.Cog):
         # If Command Parameter is None
         if command_name is None:
             embed.add_field(name="Source:", value=conchbot_source_code_url, inline=False)
-            embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested {ctx.author.name}#{ctx.author.discriminator}")
-            await ctx.send(embed=embed)
-
-        # Anything else
         else:
             # Get the command
             obj = self.client.get_command(command_name.replace('.', ' '))
@@ -154,7 +147,7 @@ class Utility(commands.Cog):
             # If command cannot be found
             if obj is None:
                 await ctx.send('Could not find command in my github source code.')
-            
+
             # Get the source of the code
             src = obj.callback.__code__
 
@@ -178,8 +171,9 @@ class Utility(commands.Cog):
                      f'{start_line + len(end_line) - 1}')
 
             embed.add_field(name="Command Source:", value=final_url, inline=False)
-            embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested {ctx.author.name}#{ctx.author.discriminator}")
-            await ctx.send(embed=embed)
+
+        embed.set_footer(icon_url=ctx.author.avatar_url, text=f"Requested {ctx.author.name}#{ctx.author.discriminator}")
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def leave(self, ctx):
@@ -302,9 +296,15 @@ class Utility(commands.Cog):
     @commands.is_owner()
     async def refresh(self, ctx):
         cog = self.client.get_cog("Jishaku")
-        await cog.jsk_git(ctx, argument=codeblock_converter(f'stash'))
+        await cog.jsk_git(ctx, argument=codeblock_converter('stash'))
         await asyncio.sleep(2)
-        await cog.jsk_git(ctx, argument=codeblock_converter(f'pull --ff-only --allow-unrelated-histories https://www.github.com/ConchDev/ConchBot master'))
+        await cog.jsk_git(
+            ctx,
+            argument=codeblock_converter(
+                'pull --ff-only --allow-unrelated-histories https://www.github.com/ConchDev/ConchBot master'
+            ),
+        )
+
         await asyncio.sleep(2)
         restart = self.client.get_command('restart')
         await ctx.invoke(restart)

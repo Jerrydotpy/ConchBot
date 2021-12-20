@@ -12,10 +12,10 @@ class Help(commands.Cog):
             embed = discord.Embed(title="ConchBot Commands", colour=discord.Colour.green(), description="ConchBot is a small bot trying to grow, so your support would"
             " be amazing! Even as much as a vote on Top.gg or DBL can help greatly.\nMy command prefix is `cb `\n"
             "You can see my latest updates via \"cb updates\"")
+            blacklist = ['Jishaku', 'Help', 'Config', 'Owner', 'Misc']
             for cog in cogs:
                 cmdlist = []
                 commands = ""
-                blacklist = ['Jishaku', 'Help', 'Config', 'Owner', 'Misc']
                 if cog in blacklist:
                     continue
 
@@ -26,19 +26,15 @@ class Help(commands.Cog):
                     flag = True
 
                 for command in cogs[cog].walk_commands():
-                    if flag is True:
+                    if flag:
                         break
                     cmdlist.append(command)
                     commands += f"{command}, "
 
-                if len([command for command in cmdlist]) < 1:
+                if not list(cmdlist):
                     continue
 
-                if flag is False:
-                    finalcmds = commands[:-2]
-                else:
-                    finalcmds = commands
-
+                finalcmds = commands[:-2] if not flag else commands
                 embed.add_field(name=f"{cog} Commands", value=f"`{finalcmds}`", inline=False)
 
             embed.add_field(name="Extra Links", value="[Invite Me!](https://top.gg/bot/733467297666170980/invite/)"
@@ -59,16 +55,11 @@ class Help(commands.Cog):
                 return await ctx.send("You can only view NSFW commands in NSFW-marked channels.")
 
             if command is not None:
-                params = ""
+                params = "".join(f"[{thing}] " for thing in command.clean_params)
 
-                for thing in command.clean_params:
-                    params += f"[{thing}] "
                 embed = discord.Embed(title=f"{value} Command", color=discord.Color.random())
                 embed.add_field(name="Description:", value=command.description, inline=False)
-                if len(command.aliases) < 1:
-                    aliases = '*No Aliases*'
-                else:
-                    aliases = command.aliases
+                aliases = '*No Aliases*' if len(command.aliases) < 1 else command.aliases
                 embed.add_field(name="Aliases:", value=aliases, inline=False)
                 embed.add_field(name="How to use:", value=f"`cb {command.qualified_name} {params}`", inline=False)
 
@@ -85,9 +76,7 @@ class Help(commands.Cog):
                     return await ctx.send("You can only view the NSFW category in NSFW-marked channels.")
 
                 embed = discord.Embed(title=f"{cog.qualified_name} Category", color=discord.Color.random(), description=cog.description)
-                commands = ""
-                for command in cog.walk_commands():
-                    commands += f"{command}, "
+                commands = "".join(f"{command}, " for command in cog.walk_commands())
                 embed.add_field(name="Commands:", value=f"`{commands[:-2]}`")
 
                 await ctx.send(embed=embed)

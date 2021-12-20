@@ -9,8 +9,8 @@ class Tags(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.delete_snipes = dict()
-        self.edit_snipes = dict()
-        self.delete_snipes_attachments = dict()
+        self.edit_snipes = {}
+        self.delete_snipes_attachments = {}
 
     async def get_tag(self, guild_id, tag):
         db = await aiosqlite.connect("./bot/db/tags.db")
@@ -49,10 +49,7 @@ class Tags(commands.Cog):
         await cursor.close()
         await db.close()        
 
-        if result is None:
-            return False
-        else:
-            return True
+        return result is not None
 
     async def edit_info(self, guild, name, info):
         today = datetime.date.today()
