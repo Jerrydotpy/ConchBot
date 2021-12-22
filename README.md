@@ -16,75 +16,20 @@ Note: The orginal has been discontinued
 
 The source code of the Discord bot ConchBot. The bot is **entirely** open source.
 
-## How to Self-Host
-Follow the instructions to host your own ConchBot
-
-1. Create&Activate a/the venv
-
-It is very simple to do this
-
-```
-# python -m venv [name of the venv: default - venv]
-
-python -m venv venv
-```
-<br>
-
-Activating a/the venv:
-
-
-Windows (CMD):
-
-
-```
-# [name of venv]/Scripts/activate.bat
-
-venv/Scripts/activate.bat
+## Self-Hosting
+This bot uses dotenv. So this is what your `.env` should look like
+```py
+TOKEN= #your token here
+ID= #your id here
+iFunnyemail= #your ifunny email here
+iFunnypass= #your ifunny pass here
+redditid= #your reddit application id
+redditsecret= #your reddit application secret
+redditpassword= #your reddit application password
+aiapikey= #your api key from https://api-info.pgamerx.com/register.html
 ```
 
-Windows (PowerShell):
-
-```
-# [name of venv]/Scripts/activate.bat
-
-venv/Scripts/activate.ps1
-```
-
-Mac&Linux:
-
-```
-# source [name of venv]/bin/activate
-
-source venv/bin/activate
-```
-
-<br>
-
-2. Install the required packages:
-
-This is simple to do:
-
-In your terminal, run this command
-```
-pip install -r requirements.txt
-```
-
-3. Configure the bot
-
-This is very simple since we set it up for you so this should be easy. Run the command in your terminal
-
-```
-python setup.py
-```
-Answer the questions with a valid response
-
-4. Run the bot
-
-Running the bot is as simple as you think since we set up everything. By doing
-
-```
-python launcher.py
-```
+Then run `launcher.py`
 
 
 ## Contribute
@@ -98,7 +43,7 @@ Steps:
 
 3. Create a PR (Pull Request)
 
-We'll look into the the PR and we ethier approve or disapprove.
+We'll look into the the PR
 
 
 
