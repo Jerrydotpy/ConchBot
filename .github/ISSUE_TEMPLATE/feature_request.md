@@ -25,7 +25,11 @@ Describe what would you do?
 
 ```
 
+## Checklist
 
+- [ ] I have searched for duplicates
+- [ ] I have gave everything I know about this
+- [ ] This is not a prank.
 
 ## Additional context 
 Add any other context or screenshots about the feature request here.
