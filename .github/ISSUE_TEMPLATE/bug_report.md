@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 title: ''
 labels: 'unknown bug'
-assignees: ''
+assignees: 'Jerry-py,Jerrydotpy'
 
 ---
 
@@ -30,6 +30,12 @@ A clear and concise description of what you expected to happen.
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
+
+## Checklist
+[ ] I have searched for duplicates
+[ ] I have gave everything I know about this
+[ ] This is not a prank.
+
 
 
 **Additional context**
