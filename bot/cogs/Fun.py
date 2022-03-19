@@ -39,7 +39,7 @@ class Fun(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.dbl = dbl.DBLClient(self.client, dbltoken)
-        self.delete_snipes = dict()
+        self.delete_snipes = {}
         self.edit_snipes = {}
         self.delete_snipes_attachments = {}
         self.time = datetime.datetime.utcnow().strftime('%Y:%m:%d %H:%M:%S')

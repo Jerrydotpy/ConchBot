@@ -158,10 +158,11 @@ class Utility(commands.Cog):
             filename = src.co_filename
 
             # Check if module doesn't start with discord
-            if not module.startswith('discord'):
-                location = os.path.relpath(filename).replace('\\', '/')
-            else:
-                location = module.replace('.', '/') + '.py'
+            location = (
+                module.replace('.', '/') + '.py'
+                if module.startswith('discord')
+                else os.path.relpath(filename).replace('\\', '/')
+            )
 
             # Get the line of code for the command
             end_line, start_line = inspect.getsourcelines(src)
@@ -209,7 +210,7 @@ class Utility(commands.Cog):
         db = await aiosqlite.connect("./bot/db/updates.db")
         cursor = await db.cursor()
         now = datetime.datetime.now()
-        td = datetime.datetime.today()
+        td = datetime.datetime.now()
         currenttime = datetime.time(hour=now.hour, minute=now.minute).isoformat(timespec='minutes')
         name, desc, updates = content.split(", ")
 
@@ -230,7 +231,7 @@ class Utility(commands.Cog):
             await ctx.send("Update published!")
         else:
             await ctx.send("Aborting...")
-        
+
         await db.commit()
         await cursor.close()
         await db.close()

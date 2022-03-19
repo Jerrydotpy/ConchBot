@@ -8,7 +8,7 @@ from DiscordUtils import Pagination
 class Tags(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.delete_snipes = dict()
+        self.delete_snipes = {}
         self.edit_snipes = {}
         self.delete_snipes_attachments = {}
 
@@ -22,11 +22,7 @@ class Tags(commands.Cog):
         await cursor.close()
         await db.close()
 
-        if result is None:
-            return False
-
-        else:
-            return result
+        return False if result is None else result
 
     async def create_table(self, id):
         db = await aiosqlite.connect("./bot/db/tags.db")
