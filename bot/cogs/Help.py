@@ -34,7 +34,7 @@ class Help(commands.Cog):
                 if not list(cmdlist):
                     continue
 
-                finalcmds = commands[:-2] if not flag else commands
+                finalcmds = commands if flag else commands[:-2]
                 embed.add_field(name=f"{cog} Commands", value=f"`{finalcmds}`", inline=False)
 
             embed.add_field(name="Extra Links", value="[Invite Me!](https://top.gg/bot/733467297666170980/invite/)"

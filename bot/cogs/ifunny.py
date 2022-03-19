@@ -90,8 +90,8 @@ class iFunny(commands.Cog):
         for feature in feed:
             if "videos" in feature.content_url:
                 continue
-            print(hex(int("0x" + feature.author.nick_color, 16)))
-            embed = discord.Embed(color=int("0x" + feature.author.nick_color, 16))
+            print(hex(int(f"0x{feature.author.nick_color}", 16)))
+            embed = discord.Embed(color=int(f"0x{feature.author.nick_color}", 16))
             try:
                 embed.set_author(name=feature.author.nick, url=feature, icon_url=feature.author.profile_image.url)
             except:
@@ -115,8 +115,8 @@ class iFunny(commands.Cog):
         for post in feed:
             if "videos" in post.content_url:
                 continue
-            print(hex(int("0x" + post.author.nick_color, 16)))
-            embed = discord.Embed(color=int("0x" + post.author.nick_color, 16))
+            print(hex(int(f"0x{post.author.nick_color}", 16)))
+            embed = discord.Embed(color=int(f"0x{post.author.nick_color}", 16))
             try:
                 embed.set_author(name=post.author.nick, url=post, icon_url=post.author.profile_image.url)
             except:
@@ -140,7 +140,7 @@ class iFunny(commands.Cog):
             return await ctx.send(embed=discord.Embed(title=f"❌ User \"{user}\" does not exist.", color=discord.Color.red()))
 
         if user.is_verified:
-            username = user.nick + " <a:verified:848709295851044884>"
+            username = f'{user.nick} <a:verified:848709295851044884>'
         else:
             username = user.nick
 
@@ -149,7 +149,7 @@ class iFunny(commands.Cog):
         if user.profile_image:
             embed.set_thumbnail(url=user.profile_image.url)
             embed.set_author(name=user.nick, icon_url=user.profile_image.url, url=f"https://ifunny.co/user/{user.nick}")
-        
+
         embed.add_field(name="Subscribers:", value=user.subscriber_count)
         embed.add_field(name="Subscriptions:", value=user.subscription_count)
         embed.add_field(name="Total Posts:", value=user.post_count)
